@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+/*
+ * University OS design tokens.
+ *
+ * Identity: white / navy / blue / light-blue + neutrals. Green is reserved for tiny success indicators.
+ * Light and dark palettes are defined once here as CSS variables; components only use the semantic
+ * Tailwind colours below (bg-surface, text-muted, border-line, text-accent-text, …) so they work in both.
+ * The active palette is chosen by <html data-theme="light|dark"> (see components/theme/theme-script.tsx).
+ */
+:root {
+  /* Light — clean white surfaces, navy ink, blue accent */
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --raised: #f0f3f9;
+  --hover: #e9eef7;
+  --line: #e1e6f0;
+  --line-strong: #c9d2e3;
+  --fg: #0e1a35;
+  --muted: #4f5d7c;
+  --subtle: #7d8aa6;
+  --accent: #2455d6;
+  --accent-strong: #1a3fae;
+  --accent-text: #1d47c2;
+  --on-accent: #ffffff;
+  --accent-soft: rgb(36 85 214 / 0.08);
+  --accent-border: rgb(36 85 214 / 0.28);
+  --sky: #3b8fe0;
+  --danger: #cc3b55;
+  --danger-soft: rgb(204 59 85 / 0.08);
+  --danger-border: rgb(204 59 85 / 0.3);
+  --success: #1f9d6b;
+  --success-soft: rgb(31 157 107 / 0.09);
+  --success-border: rgb(31 157 107 / 0.3);
+  --warning: #a9680f;
+  --warning-soft: rgb(169 104 15 / 0.09);
+  --warning-border: rgb(169 104 15 / 0.3);
+  --overlay: rgb(14 26 53 / 0.45);
+  --shadow-card: 0 1px 2px rgb(14 26 53 / 0.04), 0 1px 3px rgb(14 26 53 / 0.04);
+  --shadow-pop: 0 12px 40px rgb(14 26 53 / 0.18);
+  --glow: rgb(36 85 214 / 0.1);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  /* Dark — near-black graphite with navy surfaces; light-blue / cyan accents, a touch of lavender */
+  --bg: #0a0d14;
+  --surface: #101725;
+  --raised: #162033;
+  --hover: #1c2a43;
+  --line: #213049;
+  --line-strong: #2f4264;
+  --fg: #e7ecf7;
+  --muted: #97a5c0;
+  --subtle: #66738f;
+  --accent: #6aa5ff;
+  --accent-strong: #8dbaff;
+  --accent-text: #8fbcff;
+  --on-accent: #07101f;
+  --accent-soft: rgb(106 165 255 / 0.12);
+  --accent-border: rgb(106 165 255 / 0.3);
+  --sky: #4cc3e0;
+  --danger: #f27a8c;
+  --danger-soft: rgb(242 122 140 / 0.12);
+  --danger-border: rgb(242 122 140 / 0.32);
+  --success: #4cbf95;
+  --success-soft: rgb(76 191 149 / 0.12);
+  --success-border: rgb(76 191 149 / 0.3);
+  --warning: #e6b45e;
+  --warning-soft: rgb(230 180 94 / 0.12);
+  --warning-border: rgb(230 180 94 / 0.3);
+  --overlay: rgb(2 5 12 / 0.65);
+  --shadow-card: 0 0 0 transparent;
+  --shadow-pop: 0 18px 50px rgb(0 0 0 / 0.55);
+  --glow: rgb(106 165 255 / 0.1);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-hover: var(--hover);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-text: var(--accent-text);
+  --color-on-accent: var(--on-accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-border: var(--accent-border);
+  --color-sky: var(--sky);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-danger-border: var(--danger-border);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-success-border: var(--success-border);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-warning-border: var(--warning-border);
+  --color-overlay: var(--overlay);
+  --shadow-card: var(--shadow-card);
+  --shadow-pop: var(--shadow-pop);
+  --font-sans: ui-sans-serif, "Inter", "SF Pro Text", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --radius-card: 12px;
+  --animate-fade-in: fade-in 160ms ease-out;
+  --animate-pop: pop 140ms ease-out;
+  @keyframes fade-in { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: none; } }
+  @keyframes pop { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: none; } }
+}
+
+html, body { background: var(--bg); color: var(--fg); }
+body {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv11", "ss01";
+}
+
+::selection { background: var(--accent-soft); }
+
+/* Accessible, consistent focus ring */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+* { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* Course colours — via data-color so Tailwind never has to generate dynamic class names. */
+:root [data-color="violet"] { --c: #7c6be0; }
+:root [data-color="blue"] { --c: #2f7ae5; }
+:root [data-color="cyan"] { --c: #1ba3c4; }
+:root [data-color="green"] { --c: #2fa37c; }
+:root [data-color="amber"] { --c: #c98a1c; }
+:root [data-color="rose"] { --c: #d4527a; }
+:root [data-color="slate"] { --c: #6b7894; }
+:root[data-theme="dark"] [data-color="violet"] { --c: #a597f5; }
+:root[data-theme="dark"] [data-color="blue"] { --c: #6aa5ff; }
+:root[data-theme="dark"] [data-color="cyan"] { --c: #4cc3e0; }
+:root[data-theme="dark"] [data-color="green"] { --c: #4cbf95; }
+:root[data-theme="dark"] [data-color="amber"] { --c: #e6b45e; }
+:root[data-theme="dark"] [data-color="rose"] { --c: #ee7f9f; }
+:root[data-theme="dark"] [data-color="slate"] { --c: #8d9ab5; }
+
+/* Dialog / palette / toast surfaces share the elevated shadow */
+.shadow-pop { box-shadow: var(--shadow-pop); }
